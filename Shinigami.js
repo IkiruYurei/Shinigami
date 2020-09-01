@@ -9,7 +9,6 @@ client.aliases = new Discord.Collection();
 const modules = ['Administration', 'Currency', 'Cursed', 'CustomCommands', 'Fun', 'Help', 'LevelingSystem', 'Messages', 'Misc', 'Moderation', 'Partner', 'REI', 'Searches', 'Staff'];
 
 
-
 modules.forEach(c => {
     fs.readdir(`C:/Users/kawai/Documents/Shinigami/Commands/${c}/`, (err, files) => {
         if (err) throw err;
@@ -22,25 +21,8 @@ modules.forEach(c => {
 });
 
 
-
-
-
 client.once('ready', () => {
   console.log('Ready.');
 });
-
-client.on('message', msg => {
-    if (msg.author.id === client.user.id)
-        return;
-
-    if (msg.content === '?s yeetus') {
-        msg.reply('I have been summoned.');
-    }
-
-    if (msg.content === 'im in the ghetto') {
-        msg.channel.send('ratatata');
-    }
-});
-
 
 client.login(config.token);

@@ -1,16 +1,22 @@
+console.log()
+
 const Discord = require('discord.js');
-const config = require('./config.json');
+const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
 const fs = require('fs');
 
 client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
 
-const modules = ['Administration', 'Currency', 'Cursed', 'CustomCommands', 'Fun', 'Help', 'LevelingSystem', 'Messages', 'Misc', 'Moderation', 'Partner', 'REI', 'Searches', 'Staff'];
 
+var modules = []
+for (let dirent of fs.readdirSync(`./Commands/`, { withFileTypes: true }))
+{
+    if (dirent.isDirectory())
+modules.push(dirent.name)
+}
 
 modules.forEach(c => {
-    fs.readdir(`C:/Users/kawai/Documents/Shinigami/Commands/${c}/`, (err, files) => {
+    fs.readdir(`./Commands/${c}/`, (err, files) => {
         if (err) throw err;
         console.log(`[Commandlogs] Loaded ${files.length} commands of module ${c}`);
         files.forEach(f => {
@@ -22,7 +28,24 @@ modules.forEach(c => {
 
 
 client.once('ready', () => {
-  console.log('Ready.');
+    console.log('Ready.');
 });
 
-client.login(config.token);
+client.on('message', async (msg) => {
+    if (msg.author.bot) return;
+    if (!msg.content.startsWith(prefix)) return;
+
+    const args = msg.content.slice(prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+
+    if (command) {
+        try {
+        run(message)
+        } catch (e) {
+            msg.channel.send(`That command threw an error: \`\`\`${e}\`\`\`\``)
+        }
+    }
+});
+
+
+client.login(token);

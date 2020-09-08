@@ -1,11 +1,15 @@
+const Discord = require('discord.js')
 
+const client = new Discord.Client({disableEveryone: true});
+
+
+module.exports.run = async (client, msg, args) => {
+    
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * 201) - 100;
 }
-
-module.exports.run = msg => {
     if (msg.author.id === client.user.id)
         return;
 
@@ -83,19 +87,9 @@ module.exports.run = msg => {
 ;
 
 
-module.exports.help = {
+module.exports.config = {
     name: "simpcalc",
     description: "A command that calculates how much of a simp someone is.",
     usage: "simpcalc",
     category: "fun",
 };
-
-
-
-
-
-
-
-
-
-

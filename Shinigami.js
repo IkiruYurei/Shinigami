@@ -21,7 +21,7 @@ modules.forEach(c => {
         console.log(`[Commandlogs] Loaded ${files.length} commands of module ${c}`);
         files.forEach(f => {
             const props = require(`./Commands/${c}/${f}`);
-            client.commands.set(props.help.name, props);
+            client.commands.set(props.config.name, props);
         });
     });
 });
@@ -40,7 +40,7 @@ client.on('message', async (msg) => {
 
     if (command) {
         try {
-        run(message)
+        run(client, msg, args);
         } catch (e) {
             msg.channel.send(`That command threw an error: \`\`\`${e}\`\`\`\``)
         }

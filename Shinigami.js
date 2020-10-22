@@ -1,11 +1,11 @@
 console.log()
 
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
-const client = new Discord.Client();
+global.bot = new Discord.Client({ disableMentions: 'everyone' });
+const { prefix, token } = require('./Privateconfig.json');
 const fs = require('fs');
 
-client.commands = new Discord.Collection();
+bot.commands = new Discord.Collection();
 
 
 var modules = []
@@ -21,31 +21,29 @@ modules.forEach(c => {
         console.log(`[Commandlogs] Loaded ${files.length} commands of module ${c}`);
         files.forEach(f => {
             const props = require(`./Commands/${c}/${f}`);
-            client.commands.set(props.config.name, props);
+            bot.commands.set(props.help.name, props);
         });
     });
 });
 
 
-client.once('ready', () => {
-    console.log('Ready.');
-});
+bot.on('ready', () => require('./Events/ready')(bot));
 
-client.on('message', async (msg) => {
+bot.on('message', async (msg) => {
     if (msg.author.bot) return;
     if (!msg.content.startsWith(prefix)) return;
 
     const args = msg.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-
-    if (command) {
-        try {
-        run(client, msg, args);
-        } catch (e) {
-            msg.channel.send(`That command threw an error: \`\`\`${e}\`\`\`\``)
-        }
+    
+    const cmd = bot.commands.get(command);
+    if (!cmd) return;
+    try {
+        cmd.run(bot, msg, args);
+    } catch (e) {
+        msg.channel.send(`That command threw an error: \`\`\`${e}\`\`\`\``)
     }
 });
 
 
-client.login(token);
+bot.login(token);

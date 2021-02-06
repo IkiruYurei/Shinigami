@@ -1,12 +1,9 @@
-console.log()
-
 const Discord = require('discord.js');
 global.bot = new Discord.Client({ disableMentions: 'everyone' });
 const { prefix, token } = require('./Privateconfig.json');
 const fs = require('fs');
 
 bot.commands = new Discord.Collection();
-
 
 var modules = []
 for (let dirent of fs.readdirSync(`./Commands/`, { withFileTypes: true }))
@@ -41,7 +38,7 @@ bot.on('message', async (msg) => {
     try {
         cmd.run(bot, msg, args);
     } catch (e) {
-        msg.channel.send(`That command threw an error: \`\`\`${e}\`\`\`\``)
+        msg.channel.send(`That command threw the error: \`\`\`${e}\`\`\`\``)
     }
 });
 
